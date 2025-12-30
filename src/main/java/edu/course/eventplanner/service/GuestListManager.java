@@ -5,79 +5,45 @@ import java.util.*;
 
 public class GuestListManager<E> {
     private final LinkedList<E> guests = new LinkedList<>();
-    private final Map<String, E> guestByName = new HashMap<>(); // Used for Fast Lookup
-    private int size;
+    private final Map<String, E> guestByName = new HashMap<>();
+    private int size = 0;
 
     public void addGuest(E guest) {
-        int i;
-        for(i = 0; i < guests.size(); i++)
-            if(guests.get(i).equals(guest))
-                break;
+        String name = (guest instanceof Guest) ? ((Guest) guest).getName() : guest.toString();
 
-        if (i == 0) {
-            guests.addFirst(guest);
-            size++;
-        } else if (i == size) {
-            guests.addLast(guest);
-            size++;
-        } else {
-            guests.add(i, guest);
-            size++;
+        // Prevent duplicates
+        if (guestByName.containsKey(name)) {
+            return;
         }
 
-        // Store in map so we can find it fast later
-        String name;
-        if (guest instanceof Guest) {
-            name = ((Guest) guest).getName();
-        } else {
-            name = guest.toString();
-        }
+        //add to the linked list and to the map
+        guests.addLast(guest);
         guestByName.put(name, guest);
+        size++;
     }
 
     public boolean removeGuest(String guestName) {
-
-        // Use the map to find the object first
+        // 1. O(1) Lookup: Use the map to find the object instantly
         E toRemove = guestByName.get(guestName);
+
         if (toRemove == null) {
-            return false; // Not in the map, so not in the list
-        }
-
-        int j;
-        for(j = 0; j < guests.size(); j++) {
-            if(guests.get(j).equals(toRemove)) {
-                break;
-            }
-        }
-
-        if (j >= guests.size()) {
             return false;
         }
 
-        if(j == 0) {
-            guests.removeFirst();
-            size--;
-        } else {
-            guests.remove(j);
-            size--;
-        }
-
-        // Remove from map to keep it in sync
+        // 2. Remove from both to keep them in sync
+        guests.remove(toRemove);
         guestByName.remove(guestName);
+
+        size--;
         return true;
     }
 
     public E findGuest(String guestName) {
-        // This is O(1) instead of looping through the whole list
         return guestByName.get(guestName);
     }
 
     public int size() {
         return size;
-    }
-
-    public int getGuestCount() {
-        return guests.size();
     }
 
     public List<E> getAllGuests() {

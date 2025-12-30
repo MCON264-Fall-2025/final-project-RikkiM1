@@ -25,6 +25,8 @@ public class Guest {
         if (this == o) return true;
         if (!(o instanceof Guest)) return false;
         Guest guest = (Guest) o;
-        return Objects.equals(groupTag, guest.groupTag);
+        // Two guests are only equal if BOTH their name and group match
+        return Objects.equals(name, guest.name) &&
+                Objects.equals(groupTag, guest.groupTag);
     }
 }

@@ -5,16 +5,26 @@ import java.util.*;
 
 public class VenueSelector {
     private final List<Venue> venues;
-    private List<Venue> validVenues= new ArrayList<>();
+
+    // We removed the private validVenues field from here to prevent
+    // data from "piling up" every time the method is called.
+
     public VenueSelector(List<Venue> venues) {
         this.venues = venues;
     }
+
     public Venue selectVenue(double budget, int guestCount) {
-        //add the valid venues to the validVenues list
-        for(Venue v:venues){
-            if(v.getCost() <= budget && v.getCapacity()>= guestCount )
+        // We initialize validVenues INSIDE the method so it is
+        // fresh and empty every time you click "Select Venue."
+        List<Venue> validVenues = new ArrayList<>();
+
+        // add the valid venues to the validVenues list
+        for (Venue v : venues) {
+            if (v.getCost() <= budget && v.getCapacity() >= guestCount) {
                 validVenues.add(v);
+            }
         }
+
         // Bubble Sort Algorithm
         for (int i = 0; i < validVenues.size() - 1; i++) {
             for (int j = 0; j < validVenues.size() - i - 1; j++) {
@@ -41,6 +51,7 @@ public class VenueSelector {
                 }
             }
         }
+
         if (validVenues.isEmpty()) {
             return null;
         }
