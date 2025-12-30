@@ -6,9 +6,9 @@ import java.util.*;
 public class Generators {
     public static List<Venue> generateVenues() {
         return List.of(
-            new Venue("Community Hall",1500,40,5,8),
-            new Venue("Garden Hall",2500,60,8,8),
-            new Venue("Grand Ballroom",5000,120,15,8)
+            new Venue("Chynka",1500,40,5,8),
+            new Venue("The Palace",2500,60,8,8),
+            new Venue("El Caribe",5000,120,15,8)
         );
     }
     public static List<Guest> GenerateGuests(int n) {
