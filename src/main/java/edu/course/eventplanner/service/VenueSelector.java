@@ -4,24 +4,28 @@ import edu.course.eventplanner.model.Venue;
 import java.util.*;
 
 public class VenueSelector {
-    private final List<Venue> venues;
-    public VenueSelector(List<Venue> venues)
-    {
-        this.venues = venues;
-    }
-    public Venue selectVenue(double budget, int guestCount)
-    {
-        List<Venue> validVenues = new ArrayList<>();
-//makw this a binary search tree
-        // Step 1: filter venues
+
+    private final NavigableSet<Venue> venueTree;
+
+    public VenueSelector(List<Venue> venues) {
+        this.venueTree = new TreeSet<>(
+                Comparator.comparingDouble(Venue::getCost)
+                        .thenComparing(Venue::getCapacity, Comparator.reverseOrder())
+                        .thenComparing(Venue::getName)
+        );
+
+        // Defensive copy to avoid immutable list failure
         for (Venue v : venues) {
+            venueTree.add(v);
+        }
+    }
+
+    public Venue selectVenue(double budget, int guestCount) {
+        for (Venue v : venueTree) {
             if (v.getCost() <= budget && v.getCapacity() >= guestCount) {
-                validVenues.add(v);
+                return v;
             }
         }
-
-        if (validVenues.isEmpty()) {
-            return null;
-        }
-        return validVenues.get(0);
-}}
+        return null;
+    }
+}

@@ -2,22 +2,69 @@ package edu.course.eventplanner;
 
 import edu.course.eventplanner.model.Guest;
 import edu.course.eventplanner.service.GuestListManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class GuestsTest {
-    @Test
-    void testAddGuest() {
-        GuestListManager guestListManager = new GuestListManager();
-        Guest g = new Guest("Rikki", "Mann");
-        guestListManager.addGuest(g);
+class AddGuestListManagerUnitTest {
 
-        //swicth this that not use the find method. make sure linked list and map were done correctly
-        Guest found = guestListManager.findGuest("Rikki");
-        assertNotNull(found, "Guest shoudl be found.");
-        assertEquals("Rikki", found.getName(), "Guest name should be Rikki");
-        assertEquals("family", found.getGroupTag(), "Guest should be family");
+    private GuestListManager guestListManager;
+
+//ALL 4 OF THESE TESTS PASSED!!!!!!!!!!11
+
+    @BeforeEach
+    void setUp() {
+        guestListManager = new GuestListManager();
     }
+
+    @Test
+    void testNullGuestListManager() {
+        assertNotNull(guestListManager);
+    }
+
+    @Test
+    void testAddGuestToExistingGuest() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+        assertEquals(1, guestListManager.getGuestCount(), "Guest count should be 1");
+        Guest firstGuest = guestListManager.getAllGuests().get(0);
+        assertEquals("Alice", firstGuest.getName());
+    }
+
+    @Test
+    void testAddOneGuestAtATime() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+        assertEquals(1, guestListManager.getGuestCount(), "Guest count should be 1");
+        Guest firstGuest = guestListManager.getAllGuests().get(0);
+        assertEquals("Alice", firstGuest.getName());
+    }
+
+    @Test
+    void testAddMultipleGuestsOneAtATime() {
+        Guest g1 = new Guest("Alice", "family");
+        Guest g2 = new Guest("Bob", "friends");
+        Guest g3 = new Guest("Charlie", "coworkers");
+
+        // Add guests one at a time
+        guestListManager.addGuest(g1);
+        guestListManager.addGuest(g2);
+        guestListManager.addGuest(g3);
+
+        // Check total count
+        assertEquals(3, guestListManager.getGuestCount(), "Guest count should be 3");
+
+        // Check order in the linked list
+        assertEquals("Alice", guestListManager.getAllGuests().get(0).getName());
+        assertEquals("Bob", guestListManager.getAllGuests().get(1).getName());
+        assertEquals("Charlie", guestListManager.getAllGuests().get(2).getName());
+    }
+    @Test
+    void removeGuestFromEmptyGuestList() {
+
+    }
+
+
 }

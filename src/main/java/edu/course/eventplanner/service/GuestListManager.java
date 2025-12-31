@@ -24,9 +24,20 @@ public class GuestListManager {
     }
 
     public boolean removeGuest(String guestName) {
-        return false;
-    }
+        // Look up the guest in the map
+        Guest guest = guestsMap.get(guestName);
+        if (guest == null) {
+            return false; // Guest not found
+        }
 
+        // Remove from the linked list
+        guests.remove(guest);
+
+        // Remove from the map
+        guestsMap.remove(guestName);
+
+        return true; // Guest successfully removed
+    }
     public Guest findGuest(String guestName) {
         //need to loop through all the gueets and return what you are looking for
         return null;
