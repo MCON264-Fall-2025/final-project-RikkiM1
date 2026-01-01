@@ -25,7 +25,9 @@ public class Main {
         guests = kybd.nextInt();
         kybd.nextLine();
         List<Venue> venues = Generators.generateVenues();
-        System.out.println("What tasks woudld you like to do: 1. Load sample data\n" +
+        while(true) {
+        System.out.println("What tasks woudld you like to do:\n" +
+                "1. Load sample data\n" +
                 "2. Add guest\n" +
                 "3. Remove guest\n" +
                 "4. Select venue\n" +
@@ -33,7 +35,8 @@ public class Main {
                 "6. Add preparation task\n" +
                 "7. Execute next task\n" +
                 "8. Undo last task\n" +
-                "9. Print event summary");
+                "9. Print event summary\n" +
+                "10. Finished");
         int Menu = kybd.nextInt();
         kybd.nextLine();
         switch (Menu) {
@@ -42,11 +45,33 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Add guest");
-                //create the lists
 
-                for (Guest g : Generators.GenerateGuests(guests)) {
-                    guestListManager.addGuest(g);
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Do you want to (1) Generate guests or (2) Add a guest manually?");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // consume newline
+
+                if (choice == 1) {
+                    System.out.println("How many guests to generate?");
+                    int guestsCount = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+
+                    for (Guest g : Generators.GenerateGuests(guestsCount)) {
+                        guestListManager.addGuest(g);
+                    }
+                } else if (choice == 2) {
+                    System.out.println("Enter guest's first name:");
+                    String firstName = scanner.nextLine();
+
+                    System.out.println("Enter guest's tag (family, friends, neighbors, coworkers):");
+                    String tag = scanner.nextLine();
+
+                    Guest newGuest = new Guest(firstName, tag);
+                    guestListManager.addGuest(newGuest);
+                } else {
+                    System.out.println("Invalid choice.");
                 }
+
                 System.out.println("Loaded " + guestListManager.getGuestCount() + " guests.");
                 break;
             case 3:
@@ -70,6 +95,17 @@ public class Main {
 
                 if (selectedVenue == null) {
                     System.out.println("No venue fits your budget and guest count.");
+                    //ask user for their event budegt
+                    System.out.println("Lets try agian.... maybe with a little more money and less peopel?" +
+                            "\nWhat is your event budget?");
+                    budget = kybd.nextDouble();
+                    kybd.nextLine();
+
+                    //ask user for number of guests
+                    System.out.println("What is your number of guests?");
+                    guests = kybd.nextInt();
+                    kybd.nextLine();
+                    venues = Generators.generateVenues();
                 } else {
                     System.out.println("Venue selected:");
                     System.out.println("Name: " + selectedVenue.getName());
@@ -95,5 +131,5 @@ public class Main {
                 System.out.println("Print event summary");
         }
 
-    }
+    }}
 }
