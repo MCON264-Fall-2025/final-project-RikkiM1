@@ -1,31 +1,23 @@
 package edu.course.eventplanner.service;
 
+import edu.course.eventplanner.model.Guest;
 import edu.course.eventplanner.model.Venue;
 import java.util.*;
 
 public class VenueSelector {
 
-    private final NavigableSet<Venue> venueTree;
+   List<Venue> venues;
+    Map <Double, Integer> venue = new HashMap<>();
 
-    public VenueSelector(List<Venue> venues) {
-        this.venueTree = new TreeSet<>(
-                Comparator.comparingDouble(Venue::getCost)
-                        .thenComparing(Venue::getCapacity, Comparator.reverseOrder())
-                        .thenComparing(Venue::getName)
-        );
+    public VenueSelector(List<Venue> venues, double budget, int guestCount) {
+        this.venues = venues;
 
-        // Defensive copy to avoid immutable list failure
-        for (Venue v : venues) {
-            venueTree.add(v);
-        }
     }
 
-    public Venue selectVenue(double budget, int guestCount) {
-        for (Venue v : venueTree) {
-            if (v.getCost() <= budget && v.getCapacity() >= guestCount) {
-                return v;
+    public Venue selectVenue(Venue venues) {
+
+            if (venue.containsKey(venues.getCost())) {
             }
-        }
-        return null;
     }
+
 }

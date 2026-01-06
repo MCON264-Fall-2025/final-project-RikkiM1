@@ -14,7 +14,8 @@ public class GuestListManager {
 
     //method to add guests
     public void addGuest(Guest guest) {
-        if (guestsMap.containsKey(guest.getName())) {
+        //check if the guest already exists
+        if (guestsMap.containsKey(guest.getName()))  {
             System.out.println("Guest already exists: " + guest.getName());
             return;
         }
@@ -25,21 +26,23 @@ public class GuestListManager {
 
     public boolean removeGuest(String guestName) {
         // Look up the guest in the map
-        Guest guest = guestsMap.get(guestName);
-        if (guest == null) {
-            return false; // Guest not found
+
+        if (guestsMap.containsKey(guestName.getName()) && guestsMap.containsValue(guestName))  {
+            // Remove from the linked list
+            guests.remove(guestName);
+            // Remove from the map
+            guestsMap.remove(guestName);
+            return true; // Guest successfully removed
         }
 
-        // Remove from the linked list
-        guests.remove(guest);
+        return false;
+        }
 
-        // Remove from the map
-        guestsMap.remove(guestName);
 
-        return true; // Guest successfully removed
-    }
+
+
     public Guest findGuest(String guestName) {
-        //need to loop through all the gueets and return what you are looking for
+        //need to loop through all the guests and return what you are looking for
         return null;
     }
 

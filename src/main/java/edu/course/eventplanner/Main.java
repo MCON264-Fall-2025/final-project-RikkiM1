@@ -24,9 +24,10 @@ public class Main {
         System.out.println("What is your number of guests?");
         guests = kybd.nextInt();
         kybd.nextLine();
+        //generate venues list
         List<Venue> venues = Generators.generateVenues();
         while(true) {
-        System.out.println("What tasks woudld you like to do:\n" +
+        System.out.println("\nWhat tasks would you like to do:\n" +
                 "1. Load sample data\n" +
                 "2. Add guest\n" +
                 "3. Remove guest\n" +
@@ -59,6 +60,7 @@ public class Main {
                     for (Guest g : Generators.GenerateGuests(guestsCount)) {
                         guestListManager.addGuest(g);
                     }
+
                 } else if (choice == 2) {
                     System.out.println("Enter guest's first name:");
                     String firstName = scanner.nextLine();
@@ -73,25 +75,35 @@ public class Main {
                 }
 
                 System.out.println("Loaded " + guestListManager.getGuestCount() + " guests.");
+for(Guest k: guestListManager.getAllGuests())
+    System.out.println(k.toString());
                 break;
             case 3:
                 System.out.println("Enter the name of the guest to remove:");
                 String removeName = kybd.nextLine();
 
+
+                System.out.println("Enter guest's tag to remove (family, friends, neighbors, coworkers):");
+                String removeTag = kybd.nextLine();
                 // Attempt to remove the guest
-                boolean removed = guestListManager.removeGuest(removeName);
+                Guest newGuest1 = new Guest(removeName, removeTag);
+                boolean removed = guestListManager.removeGuest(newGuest1);
+
 
                 if (removed) {
                     System.out.println("Guest '" + removeName + "' has been removed.");
                 } else {
                     System.out.println("Guest '" + removeName + "' was not found.");
                 }
+                for(Guest k: guestListManager.getAllGuests())
+                    System.out.println(k.toString());
                 break;
 
             case 4:
                 System.out.println("Select venue");
-                VenueSelector venueSelector = new VenueSelector(venues);
-                Venue selectedVenue = venueSelector.selectVenue(budget, guests);
+                //pass into the venuSelector all the generated venues from before
+                VenueSelector venueSelector = new VenueSelector(venues, budget, guests);
+                Venue selectedVenue = selectVenue(venueSelector);
 
                 if (selectedVenue == null) {
                     System.out.println("No venue fits your budget and guest count.");
