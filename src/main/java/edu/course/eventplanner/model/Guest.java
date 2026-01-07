@@ -12,6 +12,6 @@ public class Guest {
 
     @Override
     public String toString() {
-        return "Guest: first name='" + name + "', groupTag='" + groupTag + "'}";
+        return "Guest: first name='" + name + "', groupTag='" + groupTag ;
     }
 }
