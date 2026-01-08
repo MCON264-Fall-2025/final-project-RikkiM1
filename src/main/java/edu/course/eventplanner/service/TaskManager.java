@@ -27,7 +27,7 @@ public class TaskManager {
         if (!completed.isEmpty()) {
             Task last = completed.pop();
             // Put it back at the front of the queue if you want it next
-            ((LinkedList<Task>) upcoming).addFirst(last);
+            upcoming.add(last);
             return last;
         }
         return null; // nothing to undo

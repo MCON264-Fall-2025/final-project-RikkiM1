@@ -20,9 +20,13 @@ public class SeatingPlanner {
         Map<Integer, List<Guest>> tableAssignments = new HashMap<>();
 
         // 1. Group guests by groupTag
-        Map<String, Queue<Guest>> groupQueues = new HashMap<>();
+        Map<String, Queue<Guest>> groupQueues = new LinkedHashMap<>();
         for (Guest g : guests) {
-            groupQueues.computeIfAbsent(g.getGroupTag(), k -> new LinkedList<>()).add(g);
+            String groupTag = g.getGroupTag();
+            if (!groupQueues.containsKey(groupTag)) {
+                groupQueues.put(groupTag, new LinkedList<>());
+            }
+            groupQueues.get(groupTag).add(g);
         }
 
         int totalTables = venue.getTables();
@@ -31,10 +35,16 @@ public class SeatingPlanner {
 
         // 2. Assign guests to tables
         while (!groupQueues.isEmpty()) {
-            for (Iterator<Map.Entry<String, Queue<Guest>>> it = groupQueues.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<String, Queue<Guest>> entry = it.next();
-                Queue<Guest> queue = entry.getValue();
-                List<Guest> table = tableAssignments.computeIfAbsent(tableNumber, k -> new ArrayList<>());
+            // Make a copy of the keys to avoid ConcurrentModificationException
+            List<String> groupKeys = new ArrayList<>(groupQueues.keySet());
+
+            for (String groupTag : groupKeys) {
+                Queue<Guest> queue = groupQueues.get(groupTag);
+                List<Guest> table = tableAssignments.get(tableNumber);
+                if (table == null) {
+                    table = new ArrayList<>();
+                    tableAssignments.put(tableNumber, table);
+                }
 
                 while (!queue.isEmpty() && table.size() < seatsPerTable) {
                     table.add(queue.poll());
@@ -42,7 +52,7 @@ public class SeatingPlanner {
 
                 // Remove group if all seated
                 if (queue.isEmpty()) {
-                    it.remove();
+                    groupQueues.remove(groupTag);
                 }
 
                 // Move to next table if current table is full

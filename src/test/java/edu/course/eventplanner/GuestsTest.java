@@ -12,7 +12,7 @@ class AddGuestListManagerUnitTest {
 
     private GuestListManager guestListManager;
 
-//ALL 4 OF THESE TESTS PASSED!!!!!!!!!!11
+
 
     @BeforeEach
     void setUp() {
@@ -20,7 +20,7 @@ class AddGuestListManagerUnitTest {
     }
 
     @Test
-    void testNullGuestListManager() {
+    void testNotNullGuestListManager() {
         assertNotNull(guestListManager);
     }
 
@@ -61,10 +61,7 @@ class AddGuestListManagerUnitTest {
         assertEquals("Bob", guestListManager.getAllGuests().get(1).getName());
         assertEquals("Charlie", guestListManager.getAllGuests().get(2).getName());
     }
-    @Test
-    void removeGuestFromEmptyGuestList() {
 
-    }
 
 
 }
