@@ -126,27 +126,30 @@ System.out.println("Sample guests:");
 
                     if (selectedVenue == null) {
                         System.out.println("No venue fits your budget and guest count.");
-                        //ask user for their event budegt
-                        System.out.println("Lets try again.... maybe with a little more money and less peopel?" + "\nWhat is your event budget?");
+                        System.out.println("Lets try again.... maybe with a little more money and fewer people?");
+                        System.out.println("What is your event budget?");
                         budget = kybd.nextDouble();
                         kybd.nextLine();
 
-                        //ask user for number of guests
                         System.out.println("What is your number of guests?");
                         guests = kybd.nextInt();
                         kybd.nextLine();
+
                         venues = Generators.generateVenues();
                         selectedVenue = venueSelector.selectVenue(budget, guests);
-                        Task task = new Task("Selected venue: " + selectedVenue.getName());
 
-                    } else {
-                        System.out.println("Venue selected:");
-                        System.out.println("Name: " + selectedVenue.getName());
-                        System.out.println("Cost: $" + selectedVenue.getCost());
-                        System.out.println("Capacity: " + selectedVenue.getCapacity());
-                        System.out.println("Tables: " + selectedVenue.getTables());
-                        System.out.println("Seats per table: " + selectedVenue.getSeatsPerTable());
-                        taskManager.addTask(new Task ("selected venue: "+ selectedVenue.getName()));
+                        if (selectedVenue != null) {
+                            System.out.println("Venue selected:");
+                            System.out.println("Name: " + selectedVenue.getName());
+                            System.out.println("Cost: $" + selectedVenue.getCost());
+                            System.out.println("Capacity: " + selectedVenue.getCapacity());
+                            System.out.println("Tables: " + selectedVenue.getTables());
+                            System.out.println("Seats per table: " + selectedVenue.getSeatsPerTable());
+                            // ADD TASK HERE
+                            taskManager.addTask(new Task("Selected venue: " + selectedVenue.getName()));
+                        } else {
+                            System.out.println("Still no venue fits your criteria.");
+                        }
                     }
                       break;
                 case 5:
@@ -170,7 +173,7 @@ System.out.println("Sample guests:");
 
                     System.out.print("Enter preparation task: ");
                     String desc = kybd.nextLine();
-                    taskManager.addTask(new Task("Task added to queue."));
+                    taskManager.addTask(new Task(desc));
                     break;
                 case 7:
                     System.out.println("Execute next task");
