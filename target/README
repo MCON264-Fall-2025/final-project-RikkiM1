@@ -1,61 +1,47 @@
 I used AI to make my readme look nice.
 Event Planner Project
 
-Data Structures Used
+### Data Structures
 
-1. GuestListManager
-Structures: LinkedList, Map<String, Guest>
-Reasoning:
+1. **GuestListManager**
+   - Structures: `LinkedList<Guest>` + `Map<String, Guest>`
+   - Reasoning:
+     - `LinkedList` allows O(1) additions/removals at the ends.
+     - `Map` provides O(1) lookup by `key = name-groupTag`.
+     - Combination ensures fast guest management for both iteration and search.
 
-LinkedList allows efficient additions.
+2. **VenueSelector**
+   - Structure: `List<Venue>`
+   - Reasoning:
+     - Maintains all venue options.
+     - Linear search is sufficient because the list is small.
+     - Allows easy iteration for selecting the cheapest venue within budget and capacity.
 
-Map enables O(1) guest lookup by key (Name-GroupTag).
+3. **SeatingPlanner**
+   - Structures: `Map<String, Queue<Guest>>`, `Map<Integer, List<Guest>>`
+   - Reasoning:
+     - `Map<String, Queue<Guest>>` groups guests by groupTag for fair seating.
+     - `Queue` ensures guests are seated in the order added.
+     - `Map<Integer, List<Guest>>` maps table numbers to seated guests for quick access.
 
-2. VenueSelector
-Structure: List<Venue>
-Reasoning:
+4. **TaskManager**
+   - Structures: `Deque<Task>` for upcoming tasks, `Stack<Task>` for completed tasks.
+   - Reasoning:
+     - `Deque` provides FIFO order for task execution.
+     - `Stack` allows LIFO undo for last completed task.
 
-Maintains a collection of venues for easy iteration when selecting the best fit.
+     ### Algorithms & Big-O Analysis
 
-3. SeatingPlanner
-Structures: Map<String, Queue<Guest>>, Queue, Map<Integer, List<Guest>>
-Reasoning:
+     | Operation                        | Complexity | Notes |
+     |---------------------------------|------------|-------|
+     | Add guest                         | O(1)       | Map insertion |
+     | Lookup guest                       | O(1)       | Using Map key |
+     | Remove guest                       | O(1)       | Map removal |
+     | Select venue                        | O(n)       | Linear search through list of n venues |
+     | Generate seating                   | O(g + t)   | g = total guests, t = total tables; each guest placed in a table |
+     | Add task                            | O(1)       | Adding to Deque |
+     | Execute next task                   | O(1)       | Poll from front of Deque |
+     | Undo last task                      | O(1)       | Pop from Stack and reinsert into Deque |
 
-Groups guests by groupTag using Map + Queue.
-
-Seats guests fairly in a Queue.
-
-Maps table numbers to seated guests for organization, allows allows quick access.
-
-4. TaskManager
-: uses a Deque<Task> for upcoming tasks and a Stack<Task> for completed tasks.
-
-Queue enforces execution order (FIFO).
-
-Stack allows efficient undo of the last executed task (LIFO).
-
-Algorithms Used
-
-GuestListManager:
-
-Map lookup: Find a guest in O(1) time by key.
-
-VenueSelector:
-
-Linear search: Selects the cheapest venue within budget and capacity constraints.
-
-TaskManager:
-
-Queue & Stack operations:
-
-Execute tasks in FIFO order.
-
-Undo tasks in LIFO order.
-
-Big-O Complexity
-Operation	Complexity	Notes
-Finding a guest	O(1)	Using Map
-Selecting a venue	O(n)	Linear search through the venue list
-Generating seating	O(g + t)	g = total guests, t = total tables; time grows roughly linearly with guests and tables
-Executing a task	O(1)	Queue operation
-Undoing a task	O(1)	Stack operation
+     Sorting Algorithm:
+     Professor said in class that we do not need to sort in the end
