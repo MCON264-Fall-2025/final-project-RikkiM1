@@ -34,6 +34,11 @@ public class Main {
         guests = kybd.nextInt();
         kybd.nextLine();
 
+        for (Guest g : Generators.GenerateGuests(guests)) {
+            guestListManager.addGuest(g);
+        }
+        System.out.println(guests + " guests generated");
+
         //generate venues list
         List<Venue> venues = Generators.generateVenues();
 
@@ -48,7 +53,7 @@ public class Main {
                     System.out.println("Load sample data");
                     // make a linked list to hold sample guests
 
-System.out.println("Sample guests:");
+                    System.out.println("Sample guests:");
                     for (Guest g : guestListManager.getAllGuests()) {
                         System.out.println(g);
                     }
@@ -66,54 +71,44 @@ System.out.println("Sample guests:");
                     taskManager.addTask(new Task("Loaded sample data"));
                     break;
                 case 2:
-                    System.out.println("1. Generate guests\n2. Add manually");
-                    int choice = kybd.nextInt();
-                    kybd.nextLine(); // consume newline
+                    System.out.println("Add guests manually");
 
+                    System.out.print("Name: ");
+                    String name = kybd.nextLine();
+                    System.out.print("Group: ");
+                    String tag = kybd.nextLine();
 
-                    if (choice == 1) {
-                        System.out.println("How many guests to generate?");
-                        int count = kybd.nextInt();
-                        kybd.nextLine();
+                    //guestListManager.addGuest(new Guest(name, tag));
+                    Guest g = new Guest(name, tag);
+                    guestListManager.addGuest(g);
 
-                        for (Guest g : Generators.GenerateGuests(count)) {
-                            guestListManager.addGuest(g);
-                        }
-
-                        taskManager.addTask(new Task("Added " + count + " guests"));
-
-                    } else if (choice == 2) {
-                        System.out.print("Name: ");
-                        String name = kybd.nextLine();
-                        System.out.print("Group: ");
-                        String tag = kybd.nextLine();
-
-                        guestListManager.addGuest(new Guest(name, tag));
-                        taskManager.addTask(new Task("Added guest: " + name + " (" + tag + ")"));
+                    for (Guest h : guestListManager.getAllGuests()) {
+                        System.out.println(h.toString());
                     }
                     break;
                 case 3:
+                    for (Guest j : guestListManager.getAllGuests()) {
+                        System.out.println(j.toString());
+                    }
                     System.out.println("Enter the name of the guest to remove:");
                     String removeName = kybd.nextLine();
 
                     System.out.println("Enter guest's tag to remove (family, friends, neighbors, coworkers):");
                     String removeTag = kybd.nextLine();
-                    String key = removeName + "-" + removeTag;
+                    String key = (removeName + "-" + removeTag);
 
                     // Attempt to remove the guest
                     boolean removed = guestListManager.removeGuest(key);
-
                     if (removed) {
                         System.out.println("Guest '" + removeName + "' has been removed.");
-                        taskManager.addTask( new Task("Removed guest: " + removeName + " (" + removeTag + ")"));
 
                     } else {
                         System.out.println("Guest '" + removeName + "' was not found.");
                     }
 
 
-                    for (Guest g : guestListManager.getAllGuests()) {
-                        System.out.println(g.toString());
+                    for (Guest k : guestListManager.getAllGuests()) {
+                        System.out.println(k.toString());
                     }
                     break;
                 case 4:
@@ -137,23 +132,20 @@ System.out.println("Sample guests:");
 
                         venues = Generators.generateVenues();
                         selectedVenue = venueSelector.selectVenue(budget, guests);
-
-                        if (selectedVenue != null) {
-                            System.out.println("Venue selected:");
-                            System.out.println("Name: " + selectedVenue.getName());
-                            System.out.println("Cost: $" + selectedVenue.getCost());
-                            System.out.println("Capacity: " + selectedVenue.getCapacity());
-                            System.out.println("Tables: " + selectedVenue.getTables());
-                            System.out.println("Seats per table: " + selectedVenue.getSeatsPerTable());
-                            // ADD TASK HERE
-                            taskManager.addTask(new Task("Selected venue: " + selectedVenue.getName()));
-                        } else {
-                            System.out.println("Still no venue fits your criteria.");
-                        }
                     }
-                      break;
+
+                    System.out.println("Venue selected:");
+                    System.out.println("Name: " + selectedVenue.getName());
+                    System.out.println("Cost: $" + selectedVenue.getCost());
+                    System.out.println("Capacity: " + selectedVenue.getCapacity());
+                    System.out.println("Tables: " + selectedVenue.getTables());
+                    System.out.println("Seats per table: " + selectedVenue.getSeatsPerTable());
+                    // ADD TASK HERE
+
+
+                    break;
                 case 5:
-                    if(selectedVenue == null) {
+                    if (selectedVenue == null) {
                         System.out.println("You must select a venue first.");
                         break;
                     }
@@ -163,11 +155,11 @@ System.out.println("Sample guests:");
                     // print seating chart
                     for (int tableNum : seating.keySet()) {
                         System.out.println("Table " + tableNum + ":");
-                        for (Guest g : seating.get(tableNum)) {
-                            System.out.println("  " + g.getName() + " (" + g.getGroupTag() + ")");
+                        for (Guest p : seating.get(tableNum)) {
+                            System.out.println("  " + p.getName() + " (" + p.getGroupTag() + ")");
                         }
                     }
-                    taskManager.addTask(new Task("Seating chart generated"));
+
                     break;
                 case 6:
 
@@ -198,8 +190,6 @@ System.out.println("Sample guests:");
                     System.out.println("Print event summary");
                     System.out.println("Guests: " + guestListManager.getGuestCount());
                     System.out.println("Remaining tasks: " + taskManager.remainingTaskCount());
-
-
                     break;
             }
 
