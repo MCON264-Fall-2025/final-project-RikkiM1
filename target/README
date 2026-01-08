@@ -1,5 +1,6 @@
 I used AI to make my readme look nice.
 Event Planner Project
+
 Data Structures Used
 
 1. GuestListManager
@@ -24,11 +25,10 @@ Groups guests by groupTag using Map + Queue.
 
 Seats guests fairly in a Queue.
 
-Maps table numbers to seated guests for organization.
+Maps table numbers to seated guests for organization, allows allows quick access.
 
 4. TaskManager
-Structures: Queue<Task> for upcoming tasks, Stack<Task> for executed tasks
-Reasoning:
+: uses a Deque<Task> for upcoming tasks and a Stack<Task> for completed tasks.
 
 Queue enforces execution order (FIFO).
 
