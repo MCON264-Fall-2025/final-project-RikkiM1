@@ -66,14 +66,13 @@ System.out.println("Sample guests:");
                     taskManager.addTask(new Task("Loaded sample data"));
                     break;
                 case 2:
-                    System.out.println("Add guest");
-
                     System.out.println("1. Generate guests\n2. Add manually");
                     int choice = kybd.nextInt();
-                    kybd.nextLine();
+                    kybd.nextLine(); // consume newline
+
 
                     if (choice == 1) {
-                        System.out.println("How many guests?");
+                        System.out.println("How many guests to generate?");
                         int count = kybd.nextInt();
                         kybd.nextLine();
 
