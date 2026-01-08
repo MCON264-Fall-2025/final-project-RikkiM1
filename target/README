@@ -6,8 +6,9 @@ Event Planner Project
 1. **GuestListManager**
    - Structures: `LinkedList<Guest>` + `Map<String, Guest>`
    - Reasoning:
-     - `LinkedList` allows O(1) additions/removals at the ends.
-     - `Map` provides O(1) lookup by `key = name-groupTag`.
+     - `LinkedList` allows O(1) additions/removals at the ends, also a LinkedList made it much more
+      easy and efficient to group guests together by their tag when seating them at tables.
+     - `Map` provides O(1) lookup by `key = name-groupTag`, also kept them sorted.
      - Combination ensures fast guest management for both iteration and search.
 
 2. **VenueSelector**
@@ -20,12 +21,12 @@ Event Planner Project
 3. **SeatingPlanner**
    - Structures: `Map<String, Queue<Guest>>`, `Map<Integer, List<Guest>>`
    - Reasoning:
-     - `Map<String, Queue<Guest>>` groups guests by groupTag for fair seating.
-     - `Queue` ensures guests are seated in the order added.
+     - `Map<String, Queue<Guest>>` groups guests by groupTag for fair seating, also this allowed for quick and easy look up.
+     - `Queue` ensures guests are seated in the order added, this allow ensured the use of FIFO order.
      - `Map<Integer, List<Guest>>` maps table numbers to seated guests for quick access.
 
 4. **TaskManager**
-   - Structures: `Deque<Task>` for upcoming tasks, `Stack<Task>` for completed tasks.
+   - Structures: `Deque<Task>` for upcoming tasks, this also ensured FIFO, `Stack<Task>` for completed tasks, this ensured LIFO.
    - Reasoning:
      - `Deque` provides FIFO order for task execution.
      - `Stack` allows LIFO undo for last completed task.
@@ -34,13 +35,13 @@ Event Planner Project
 
      | Operation                        | Complexity | Notes |
      |---------------------------------|------------|-------|
-     | Add guest                         | O(1)       | Map insertion |
-     | Lookup guest                       | O(1)       | Using Map key |
-     | Remove guest                       | O(1)       | Map removal |
-     | Select venue                        | O(n)       | Linear search through list of n venues |
+     | Add guest                         | O(1)       | Map insertion, this was the best data structure to use for look up because it has the best time complexity|
+     | Lookup guest                       | O(1)       | Using Map key, allows for the best time complexity |
+     | Remove guest                       | O(1)       | Map removal, allows for the best time complexity |
+     | Select venue                        | O(n)       | Linear search through list of n venues, because a List was used |
      | Generate seating                   | O(g + t)   | g = total guests, t = total tables; each guest placed in a table |
-     | Add task                            | O(1)       | Adding to Deque |
-     | Execute next task                   | O(1)       | Poll from front of Deque |
+     | Add task                            | O(1)       | Adding to Deque, to ensure FIFO |
+     | Execute next task                   | O(1)       | Poll from front of Deque, FIFO order |
      | Undo last task                      | O(1)       | Pop from Stack and reinsert into Deque |
 
      Sorting Algorithm:
