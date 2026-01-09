@@ -3,23 +3,15 @@ package edu.course.eventplanner;
 import edu.course.eventplanner.model.Venue;
 import edu.course.eventplanner.service.GuestListManager;
 import edu.course.eventplanner.service.SeatingPlanner;
-import edu.course.eventplanner.util.Generators;
 import org.junit.jupiter.api.BeforeEach;
-
-
 import edu.course.eventplanner.model.Guest;
-import edu.course.eventplanner.service.GuestListManager;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
-
-public class SeatingGuestsByGroup {
+public class SeatingGuestsByGroupTest {
 
 
 
