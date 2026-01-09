@@ -14,23 +14,21 @@ public class GuestListManager {
     Map<String, Guest> guestsByName = new HashMap<>();
 
 
-    //method to add guests
     public void addGuest(Guest guest) {
-        //check if the guest already exists
         if (guest == null) return; // safely ignore null
+
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
 
-            Guest old= guestsByName.get(key);
-            if(old != null) {
-                guestsByName.remove(key);
-                
-            }
+        // If guest already exists, do nothing
+        if (guestsByName.containsKey(key)) {
+            System.out.println("Guest already exists: " + guest.getName());
+            return;
+        }
 
+        // Otherwise, add guest
         guests.add(guest);
-
         guestsByName.put(key, guest);
     }
-
     public boolean removeGuest(String guestKey) {
         if (guestKey == null || guestKey.isEmpty()) {
             return false; // safely return false instead of throwing an exception
