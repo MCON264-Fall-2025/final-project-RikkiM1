@@ -131,7 +131,38 @@ class AddGuestListManagerUnitTest {
         assertEquals(false, removed);
         assertEquals(1, guestListManager.getGuestCount());
     }
+    @Test
+    void lookupGuestCaseInsensitive() {
+        Guest guest = new Guest("Alice", "Family");
+        guestListManager.addGuest(guest);
 
+        Guest found = guestListManager.findGuest("ALICE-FAMILY");
+        assertNotNull(found, "Lookup should be case-insensitive");
+        assertEquals(guest, found);
+    }
+    @Test
+    void removeGuestCaseInsensitive() {
+        Guest guest = new Guest("Bob", "Friends");
+        guestListManager.addGuest(guest);
+
+        boolean removed = guestListManager.removeGuest("bob-FRIENDS");
+        assertTrue(removed, "Removal should work case-insensitively");
+        assertEquals(0, guestListManager.getGuestCount());
+    }
+    @Test
+    void addMultipleDuplicateGuests() {
+        Guest g1 = new Guest("Charlie", "Coworkers");
+        Guest g2 = new Guest("Charlie", "Coworkers");
+        Guest g3 = new Guest("Charlie", "Coworkers");
+
+        guestListManager.addGuest(g1);
+        guestListManager.addGuest(g2);
+        guestListManager.addGuest(g3);
+
+        assertEquals(1, guestListManager.getGuestCount(), "Duplicate guests should not increase count");
+        Guest stored = guestListManager.getAllGuests().get(0);
+        assertEquals(g3, stored, "Latest added guest replaces previous duplicates");
+    }
     @Test
     void testFindGuestCaseInsensitive() {
         Guest guest = new Guest("Alice", "Family");

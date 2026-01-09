@@ -30,7 +30,26 @@ public class LookingUpAGuestTest {
         assertTrue(allGuests.contains(guest1));
         assertTrue(allGuests.contains(guest2));
     }
+    @Test
+    void lookupGuestCaseInsensitive() {
+        Guest guest = new Guest("Alice", "Family");
+        guestListManager.addGuest(guest);
 
+        Guest found = guestListManager.findGuest("ALICE-FAMILY");
+        assertNotNull(found, "Lookup should be case-insensitive");
+        assertEquals(guest, found);
+    }
+    @Test
+    void getAllGuestsListCannotModifyManager() {
+        Guest guest = new Guest("Bob", "friends");
+        guestListManager.addGuest(guest);
+
+        List<Guest> guests = guestListManager.getAllGuests();
+        guests.clear(); // attempt to modify returned list
+
+        assertEquals(1, guestListManager.getGuestCount(),
+                "Clearing returned list should not affect internal guest list");
+    }
     @Test
     void testLookingUpAGuestThatDoesNotExist() {
         Guest guest = guestListManager.findGuest("AliceSmith-family");
