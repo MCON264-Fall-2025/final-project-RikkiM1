@@ -20,6 +20,8 @@ public class GuestListManager {
         if (guest == null) return; // safely ignore null
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
         if (guestsByName.containsKey(key)) {
+            Guest old= guestsByName.get(key);
+            guestsByName.remove(key);
             System.out.println("Guest already exists: " + guest.getName());
             return;
         }
