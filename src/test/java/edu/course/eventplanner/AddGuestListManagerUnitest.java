@@ -131,7 +131,7 @@ class AddGuestListManagerUnitTest {
         assertEquals(false, removed);
         assertEquals(1, guestListManager.getGuestCount());
     }
-    
+
     @Test
     void testFindGuestCaseInsensitive() {
         Guest guest = new Guest("Alice", "Family");

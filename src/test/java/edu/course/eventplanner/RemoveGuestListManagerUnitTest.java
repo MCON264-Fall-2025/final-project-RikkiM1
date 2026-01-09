@@ -49,6 +49,28 @@ public class RemoveGuestListManagerUnitTest {
         assertNotNull(guestListManager.findGuest("Bob-friends"), "Other guest should remain unaffected");
     }
     @Test
+    void removeGuestCaseInsensitive() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+
+        boolean removed = guestListManager.removeGuest("ALICE-FAMILY");
+        assertTrue(removed, "Removing with different case should succeed if case-insensitive");
+        assertEquals(0, guestListManager.getGuestCount());
+    }
+    @Test
+    void removeMultipleGuestsInSuccession() {
+        Guest g1 = new Guest("Alice", "family");
+        Guest g2 = new Guest("Bob", "friends");
+        guestListManager.addGuest(g1);
+        guestListManager.addGuest(g2);
+
+        assertTrue(guestListManager.removeGuest("Alice-family"));
+        assertEquals(1, guestListManager.getGuestCount());
+
+        assertTrue(guestListManager.removeGuest("Bob-friends"));
+        assertEquals(0, guestListManager.getGuestCount());
+    }
+    @Test
     void removeGuestFromEmptyGuestList() {
         // guestListManager is empty at this point
         boolean removed = guestListManager.removeGuest("RikkiMann-family");
