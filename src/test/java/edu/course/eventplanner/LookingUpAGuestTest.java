@@ -47,4 +47,26 @@ public class LookingUpAGuestTest {
         assertEquals("AliceSmith", guest.getName());
         assertEquals("family", guest.getGroupTag());
     }
+    @Test
+    void addNullGuestDoesNothing() {
+        guestListManager.addGuest(null);
+        assertTrue(guestListManager.getAllGuests().isEmpty(), "Adding null should not add any guest");
+    }
+
+    @Test
+    void lookupNullKeyReturnsNull() {
+        Guest guest = guestListManager.findGuest(null);
+        assertNull(guest, "Looking up null key should return null");
+    }
+    @Test
+    void addingDuplicateGuestReplacesOrIgnores() {
+        Guest guest1 = new Guest("Alice", "family");
+        Guest guest2 = new Guest("Alice", "family"); // same key
+        guestListManager.addGuest(guest1);
+        guestListManager.addGuest(guest2);
+
+        List<Guest> allGuests = guestListManager.getAllGuests();
+        assertEquals(1, allGuests.size(), "Duplicate guest should not create a new entry");
+        assertEquals(guest2, allGuests.get(0), "Latest added guest replaces the previous one");
+    }
 }

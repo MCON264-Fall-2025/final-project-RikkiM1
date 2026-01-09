@@ -84,4 +84,43 @@ public class ExecutingAndUndoingTasks {
 
         assertEquals(2, taskManager.remainingTaskCount(), "Two tasks should now be in the queue");
     }
+    @Test
+    void undoMultipleTasks() {
+        Task task1 = new Task("Task 1");
+        Task task2 = new Task("Task 2");
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+
+        taskManager.executeNextTask(); // Task 1
+        taskManager.executeNextTask(); // Task 2
+
+        Task undone1 = taskManager.undoLastTask();
+        assertEquals(task2, undone1);
+
+        Task undone2 = taskManager.undoLastTask();
+        assertEquals(task1, undone2);
+
+        Task undone3 = taskManager.undoLastTask();
+        assertNull(undone3, "Undo beyond executed tasks should return null");
+
+        assertEquals(2, taskManager.remainingTaskCount(), "All tasks should be back in the queue");
+    }
+    @Test
+    void undoOnEmptyManager() {
+        Task undone = taskManager.undoLastTask();
+        assertNull(undone, "Undo on empty manager should return null");
+    }
+    @Test
+    void executeAfterUndoMaintainsOrder() {
+        Task task1 = new Task("Task 1");
+        Task task2 = new Task("Task 2");
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+
+        taskManager.executeNextTask(); // Task 1
+        taskManager.undoLastTask();    // Task 1 back to queue
+
+        Task next = taskManager.executeNextTask();
+        assertEquals(task1, next, "Undo should place task at the front for next execution");
+    }
 }

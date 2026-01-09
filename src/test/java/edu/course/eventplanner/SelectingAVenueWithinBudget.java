@@ -71,4 +71,10 @@ public class SelectingAVenueWithinBudget {
         assertNotNull(selectedVenue, "Venue should be selected");
         assertEquals("Chynka", selectedVenue.getName(), "Should pick the cheapest venue that fits");
     }
+    @Test
+    void selectVenueFromEmptyList() {
+        VenueSelector venueSelector = new VenueSelector(List.of());
+        Venue selectedVenue = venueSelector.selectVenue(1000, 10);
+        assertNull(selectedVenue, "Selecting from an empty venue list should return null");
+    }
 }

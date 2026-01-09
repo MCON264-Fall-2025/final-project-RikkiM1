@@ -30,7 +30,9 @@ public class GuestListManager {
     }
 
     public boolean removeGuest(String guestKey) {
-
+        if (guestKey == null || guestKey.isEmpty()) {
+            return false; // safely return false instead of throwing an exception
+        }
         String normalizedKey = guestKey.toLowerCase();
 
         // Case 1: full key provided (name-tag)
@@ -61,11 +63,10 @@ public class GuestListManager {
     }
     public Guest findGuest(String guestName) {
         if (guestName.contains("-")) {
-            return guestsByName.get(guestName);
+            return guestsByName.get(guestName.toLowerCase()); // normalize
         } else {
-            // Return first guest matching the name
             for (Guest g : guests) {
-                if (g.getName().equals(guestName)) {
+                if (g.getName().equalsIgnoreCase(guestName)) { // ignore case
                     return g;
                 }
             }

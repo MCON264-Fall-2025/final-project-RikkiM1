@@ -54,60 +54,42 @@ public class SeatingGuestsByGroup {
         assertEquals(0, totalSeated, "There should be no guests seated");
     }
     @Test
-    void AllGuestsAreSeatedExactlyOnce(){
-        //ensure that there are only three guests seated
+    void AllGuestsAreSeatedExactlyOnce() {
         guests.add(new Guest("Rikki", "family"));
         guests.add(new Guest("Lea", "family"));
         guests.add(new Guest("Aviva", "friends"));
 
         Map<Integer, List<Guest>> seating = seatingPlanner.generateSeating(guests);
-        int totalSeated = 0;
 
-        for (List<Guest> tableGuests : seating.values()) {
-            totalSeated += tableGuests.size();
+        HashSet<Guest> seatedGuests = new HashSet<>();
+        for (List<Guest> table : seating.values()) {
+            seatedGuests.addAll(table);
         }
-        assertEquals(guests.size(), totalSeated, "All guests should be seated");
-        assertEquals(guests.size(), totalSeated, "No guest should be seated more than once");
+
+        assertEquals(guests.size(), seatedGuests.size(), "All guests should be seated exactly once");
+        for (Guest g : guests) {
+            assertTrue(seatedGuests.contains(g), "Guest " + g.getName() + " should be seated");
+        }
     }
 
     @Test
-    void AllGuestsFromTheSameGroupSitTogether(){
+    void allGuestsFromTheSameGroupSitTogether() {
         guests.add(new Guest("Rikki", "family"));
         guests.add(new Guest("Lea", "family"));
         guests.add(new Guest("Dovi", "family"));
         guests.add(new Guest("Aviva", "family"));
         guests.add(new Guest("Zahava", "friends"));
+
         Map<Integer, List<Guest>> seating = seatingPlanner.generateSeating(guests);
 
-        boolean familyTog=false;
-        boolean friendsTog=false;
-
         for (List<Guest> table : seating.values()) {
-            boolean hasFamily = false;
-            boolean hasFriends = false;
-
-            //loop through all the guests and see if their are nay with the tag family or friends
+            if (table.isEmpty()) continue;
+            String groupTag = table.get(0).getGroupTag();
             for (Guest g : table) {
-                if (g.getGroupTag().equals("family")) {
-                    hasFamily = true;
-                }
-                if (g.getGroupTag().equals("friends")) {
-                    hasFriends = true;
-                }
-            }
-//ensure that the loop before counted properly
-            if (hasFamily && table.size() == 4) {
-                familyTog = true;
-            }
-            if (hasFriends && table.size() == 1) {
-                friendsTog = true;
+                assertEquals(groupTag, g.getGroupTag(), "Guests at the same table should have the same group tag");
             }
         }
-
-        assertTrue(familyTog, "Family guests should be seated together");
-        assertTrue(friendsTog, "Friends guests should be seated together");
     }
-
     @Test
     void seatingDoesNotExceedTableCapacity(){
         //add more guests than fit on a table

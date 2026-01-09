@@ -24,8 +24,30 @@ public class RemoveGuestListManagerUnitTest {
         Guest copy = new Guest("Alice", "family");
         guestListManager.addGuest(copy);
         assertEquals(1, guestListManager.getGuestCount(), "Guest list should have one guest");
+    }@Test
+    void removeGuestWithNullKeyReturnsFalse() {
+        boolean removed = guestListManager.removeGuest(null);
+        assertFalse(removed, "Removing with null key should return false");
     }
 
+    @Test
+    void removeGuestWithEmptyKeyReturnsFalse() {
+        boolean removed = guestListManager.removeGuest("");
+        assertFalse(removed, "Removing with empty key should return false");
+    }
+    @Test
+    void removeOneOfMultipleGuests() {
+        Guest guest1 = new Guest("Alice", "family");
+        Guest guest2 = new Guest("Bob", "friends");
+        guestListManager.addGuest(guest1);
+        guestListManager.addGuest(guest2);
+
+        boolean removed = guestListManager.removeGuest("Alice-family");
+        assertTrue(removed, "Existing guest should be removed");
+
+        assertEquals(1, guestListManager.getGuestCount(), "One guest should remain");
+        assertNotNull(guestListManager.findGuest("Bob-friends"), "Other guest should remain unaffected");
+    }
     @Test
     void removeGuestFromEmptyGuestList() {
         // guestListManager is empty at this point
