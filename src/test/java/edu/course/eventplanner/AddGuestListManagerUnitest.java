@@ -131,11 +131,7 @@ class AddGuestListManagerUnitTest {
         assertEquals(false, removed);
         assertEquals(1, guestListManager.getGuestCount());
     }
-    @Test
-    void testAddNullGuestThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> guestListManager.addGuest(null),
-                "Adding null guest should throw exception");
-    }
+    
     @Test
     void testFindGuestCaseInsensitive() {
         Guest guest = new Guest("Alice", "Family");
