@@ -13,15 +13,20 @@ public class GuestListManager {
     //fast look up by name or ID
     Map<String, Guest> guestsByName = new HashMap<>();
 
-
     public void addGuest(Guest guest) {
         if (guest == null) return; // safely ignore null
 
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
 
-        // If the guest already exists, just return — do not remove or replace
+        // If the guest already exists, replace it
         if (guestsByName.containsKey(key)) {
-            System.out.println("Guest already exists: " + guest.getName());
+            Guest oldGuest = guestsByName.get(key);
+            int index = guests.indexOf(oldGuest);
+            if (index != -1) {
+                guests.set(index, guest); // replace in the list
+            }
+            guestsByName.put(key, guest); // replace in the map
+            System.out.println("Replaced existing guest: " + guest.getName());
             return;
         }
 
