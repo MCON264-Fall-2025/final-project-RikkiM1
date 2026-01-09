@@ -19,12 +19,12 @@ public class GuestListManager {
         //check if the guest already exists
         if (guest == null) return; // safely ignore null
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
-        if (guestsByName.containsKey(key)) {
+
             Guest old= guestsByName.get(key);
-            guestsByName.remove(key);
-            System.out.println("Guest already exists: " + guest.getName());
-            return;
-        }
+            if(old != null) {
+                guestsByName.remove(key);
+                
+            }
 
         guests.add(guest);
 
