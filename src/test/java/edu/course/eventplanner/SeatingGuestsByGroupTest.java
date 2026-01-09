@@ -3,6 +3,7 @@ package edu.course.eventplanner;
 import edu.course.eventplanner.model.Venue;
 import edu.course.eventplanner.service.GuestListManager;
 import edu.course.eventplanner.service.SeatingPlanner;
+import edu.course.eventplanner.service.VenueSelector;
 import org.junit.jupiter.api.BeforeEach;
 import edu.course.eventplanner.model.Guest;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,13 @@ public class SeatingGuestsByGroupTest {
         }
 
         assertEquals(0, totalSeated, "There should be no guests seated");
+    }
+    @Test
+    void venueSelectorNoAvailableVenue() {
+        List<Venue> venues = List.of(new Venue("Tiny", 1000, 5, 1, 2));
+        VenueSelector selector = new VenueSelector(venues);
+        Venue result = selector.selectVenue(50, 10); // too low budget, too many guests
+        assertNull(result);
     }
     @Test
     void AllGuestsAreSeatedExactlyOnce() {
