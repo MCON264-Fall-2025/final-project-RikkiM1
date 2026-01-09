@@ -23,7 +23,45 @@ public class ExecutingAndUndoingTasks {
         assertNull(task, "Executing a task on an empty manager should return null");
         assertEquals(0, taskManager.remainingTaskCount(), "No tasks should remain");
     }
+    @Test
+    void addNullTaskThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> taskManager.addTask(null));
+    }
+    @Test
+    void undoAndReexecuteMultipleTasks() {
+        Task task1 = new Task("Task 1");
+        Task task2 = new Task("Task 2");
+        Task task3 = new Task("Task 3");
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+        taskManager.addTask(task3);
 
+        taskManager.executeNextTask(); // task1
+        taskManager.executeNextTask(); // task2
+        taskManager.executeNextTask(); // task3
+
+        // Undo all
+        taskManager.undoLastTask(); // task3
+        taskManager.undoLastTask(); // task2
+        taskManager.undoLastTask(); // task1
+
+        assertEquals(task1, taskManager.executeNextTask());
+        assertEquals(task2, taskManager.executeNextTask());
+        assertEquals(task3, taskManager.executeNextTask());
+    }
+    @Test
+    void executeTasksInCorrectOrder() {
+        Task task1 = new Task("Task 1");
+        Task task2 = new Task("Task 2");
+        Task task3 = new Task("Task 3");
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+        taskManager.addTask(task3);
+
+        assertEquals(task1, taskManager.executeNextTask());
+        assertEquals(task2, taskManager.executeNextTask());
+        assertEquals(task3, taskManager.executeNextTask());
+    }
     @Test
     void addAndExecuteSingleTask() {
         Task task = new Task("Sample Task");
