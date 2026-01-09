@@ -19,7 +19,7 @@ public class GuestListManager {
 
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
 
-        // If guest already exists, do nothing
+        // If the guest already exists, just return — do not remove or replace
         if (guestsByName.containsKey(key)) {
             System.out.println("Guest already exists: " + guest.getName());
             return;
