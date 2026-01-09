@@ -6,8 +6,7 @@ import edu.course.eventplanner.service.GuestListManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AddGuestListManagerUnitTest {
 
@@ -132,5 +131,39 @@ class AddGuestListManagerUnitTest {
         assertEquals(false, removed);
         assertEquals(1, guestListManager.getGuestCount());
     }
+    @Test
+    void testAddNullGuestThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> guestListManager.addGuest(null),
+                "Adding null guest should throw exception");
+    }
+    @Test
+    void testFindGuestCaseInsensitive() {
+        Guest guest = new Guest("Alice", "Family");
+        guestListManager.addGuest(guest);
 
+        Guest found = guestListManager.findGuest("ALICE-FAMILY");
+        assertNotNull(found);
+        assertEquals("Alice", found.getName());
+    }
+    @Test
+    void testRemoveGuestWithSameNameDifferentType() {
+        Guest g1 = new Guest("Alice", "family");
+        Guest g2 = new Guest("Alice", "friend");
+        guestListManager.addGuest(g1);
+        guestListManager.addGuest(g2);
+
+        boolean removed = guestListManager.removeGuest("Alice-family");
+        assertEquals(true, removed);
+        assertEquals(1, guestListManager.getGuestCount());
+
+        // The other Alice should still exist
+        assertNotNull(guestListManager.findGuest("Alice-friend"));
+    }
+    @Test
+    void testAddManyGuests() {
+        for (int i = 1; i <= 100; i++) {
+            guestListManager.addGuest(new Guest("Guest" + i, "group" + i));
+        }
+        assertEquals(100, guestListManager.getGuestCount());
+    }
 }
