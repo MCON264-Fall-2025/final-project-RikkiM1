@@ -39,7 +39,7 @@ public class LookingUpAGuestTest {
         assertNotNull(found, "Lookup should be case-insensitive");
         assertEquals(guest, found);
     }
-    
+
     @Test
     void testLookingUpAGuestThatDoesNotExist() {
         Guest guest = guestListManager.findGuest("AliceSmith-family");
