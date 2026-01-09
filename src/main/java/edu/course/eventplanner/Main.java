@@ -43,7 +43,8 @@ public class Main {
         List<Venue> venues = Generators.generateVenues();
 
         while (true) {
-            System.out.println("\nWhat tasks would you like to do:" + "\n1. Load sample data" + "\n2. Add guest" + "\n3. Remove guest" + "\n4. Select venue" + "\n5. Generate seating chart" + "\n6. Add preparation task" + "\n7. Execute next task" + "\n8. Undo last task" + "\n9. Print event summary\n");
+            System.out.println("\nWhat tasks would you like to do:" + "\n1. Load sample data" + "\n2. Add guest" + "\n3. Remove guest" + "\n4. Select venue" + "\n5. Generate seating chart" + "\n6. Add preparation task" + "\n7. Execute next task" + "\n8. Undo last task" + "\n9. Print event summary\n"
+            +"10. finish");
 
             int Menu = kybd.nextInt();
             kybd.nextLine();
@@ -95,10 +96,13 @@ public class Main {
 
                     System.out.println("Enter guest's tag to remove (family, friends, neighbors, coworkers):");
                     String removeTag = kybd.nextLine();
-                    String key = (removeName + "-" + removeTag);
+                    String key = (removeName + "-" + removeTag).toLowerCase();
 
                     // Attempt to remove the guest
+
                     boolean removed = guestListManager.removeGuest(key);
+
+
                     if (removed) {
                         System.out.println("Guest '" + removeName + "' has been removed.");
 
@@ -106,10 +110,6 @@ public class Main {
                         System.out.println("Guest '" + removeName + "' was not found.");
                     }
 
-
-                    for (Guest k : guestListManager.getAllGuests()) {
-                        System.out.println(k.toString());
-                    }
                     break;
                 case 4:
                     System.out.println("Select venue");
@@ -191,6 +191,9 @@ public class Main {
                     System.out.println("Guests: " + guestListManager.getGuestCount());
                     System.out.println("Remaining tasks: " + taskManager.remainingTaskCount());
                     break;
+                case 10:
+                    System.out.println("MAZAL TOV AGAIN!\nWAS SO NICE TO WORK WITH YOU!");
+                    System.exit(0);
             }
 
         }

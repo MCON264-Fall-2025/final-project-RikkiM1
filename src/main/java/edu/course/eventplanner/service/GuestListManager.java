@@ -31,31 +31,34 @@ public class GuestListManager {
 
     public boolean removeGuest(String guestKey) {
 
-        if (guestKey.contains("-")) {
-            //split the guestkey into name and tag
-            String[] parts = guestKey.split("-", 2); // split only on first dash
-            String name = parts[0];
-            String tag = parts[1];
+        String normalizedKey = guestKey.toLowerCase();
 
+        // Case 1: full key provided (name-tag)
+        if (normalizedKey.contains("-")) {
+            Guest guest = guestsByName.get(normalizedKey);
 
-            Guest guest = guestsByName.get(guestKey.toLowerCase());
-
-            // remove by name and tag only
             if (guest == null) {
                 return false;
             }
-            if (guest.getName().equalsIgnoreCase(name)) {
-                if (guest.getGroupTag().equalsIgnoreCase(tag)) {
-                    guests.remove(guest);
-                    guestsByName.remove(guestKey);
-                    return true;
-                }
+
+            guests.remove(guest);
+            guestsByName.remove(normalizedKey);
+            return true;
+        }
+
+        // Case 2: name only provided (TEST CASE)
+        for (Map.Entry<String, Guest> entry : guestsByName.entrySet()) {
+            Guest guest = entry.getValue();
+
+            if (guest.getName().equalsIgnoreCase(guestKey)) {
+                guests.remove(guest);
+                guestsByName.remove(entry.getKey());
+                return true;
             }
         }
-            return false; // not found
-        }
 
-
+        return false;
+    }
     public Guest findGuest(String guestName) {
         if (guestName.contains("-")) {
             return guestsByName.get(guestName);

@@ -61,7 +61,75 @@ class AddGuestListManagerUnitTest {
         assertEquals("Bob", guestListManager.getAllGuests().get(1).getName());
         assertEquals("Charlie", guestListManager.getAllGuests().get(2).getName());
     }
+    @Test
+    void testAddDuplicateGuestDoesNotIncreaseCount() {
+        Guest guest = new Guest("Alice", "family");
 
+        guestListManager.addGuest(guest);
+        guestListManager.addGuest(guest); // duplicate
 
+        assertEquals(1, guestListManager.getGuestCount(),
+                "Duplicate guest should not be added");
+    }
+    @Test
+    void testRemoveGuestByFullKey() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+
+        boolean removed = guestListManager.removeGuest("alice-family");
+
+        assertEquals(true, removed);
+        assertEquals(0, guestListManager.getGuestCount());
+    }
+    @Test
+    void testRemoveGuestByFullKeyNotFound() {
+        boolean removed = guestListManager.removeGuest("ghost-family");
+        assertEquals(false, removed);
+    }
+    @Test
+    void testRemoveGuestByNameOnly() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+
+        boolean removed = guestListManager.removeGuest("Alice");
+
+        assertEquals(true, removed);
+        assertEquals(0, guestListManager.getGuestCount());
+    }
+    @Test
+    void testFindGuestByFullKey() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+
+        Guest found = guestListManager.findGuest("alice-family");
+
+        assertNotNull(found);
+        assertEquals("Alice", found.getName());
+    }
+    @Test
+    void testFindGuestNotFound() {
+        Guest found = guestListManager.findGuest("Nobody");
+        assertEquals(null, found);
+    }
+    @Test
+    void testFindGuestByNameOnly() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+
+        Guest found = guestListManager.findGuest("Alice");
+
+        assertNotNull(found);
+        assertEquals("Alice", found.getName());
+    }
+    @Test
+    void testRemoveGuestByNameOnlyNotFound() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+
+        boolean removed = guestListManager.removeGuest("Bob");
+
+        assertEquals(false, removed);
+        assertEquals(1, guestListManager.getGuestCount());
+    }
 
 }
