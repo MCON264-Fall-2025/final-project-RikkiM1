@@ -17,7 +17,8 @@ I used AI to make my README look nice.
 
 Project Overview
 
-The Event Planner Project is designed to simplify event management, from guest tracking to seating arrangements and task management. It leverages efficient data structures and algorithms to handle guests, venues, seating, and tasks in a structured and performant manner.
+The Event Planner Project is designed to manage an event, from guest tracking to seating arrangements and task management. 
+It uses efficient data structures and algorithms to handle guests, venues, seating, and tasks in a structured and performant manner.
 
 Whether you’re planning a small party or a large conference, this system ensures optimal organization with minimal manual effort.
 
@@ -40,9 +41,9 @@ Structures: LinkedList<Guest> + Map<String, Guest>
 
 Reasoning:
 
-LinkedList allows O(1) insertions/removals at the ends, ideal for dynamically growing guest lists.
+LinkedList allows O(1) insertions/removals at the ends, ideal for growing guest lists.
 
-Grouping guests by tag is efficient because we can traverse only relevant segments of the list for seating.
+Grouping guests by tag is efficient because we can traverse O(1) of the list for seating.
 
 Map<String, Guest> enables O(1) lookup by key = name-groupTag, crucial for quick updates or checks.
 
@@ -103,18 +104,18 @@ Execute next task: O(1)
 Undo last task: O(1)
 
 Algorithms & Big-O Table
-Operation	Complexity	Notes
-Add guest	O(1)	Fast lookup & insertion using Map
-Lookup guest	O(1)	Direct Map access
-Remove guest	O(1)	Map removal is efficient
-Select venue	O(n)	Linear search in a small list
-Generate seating	O(g + t)	Each guest is assigned to a table
-Add task	O(1)	Deque insertion at front/back
-Execute next task	O(1)	Poll from Deque front
-Undo last task	O(1)	Pop from Stack and reinsert into Deque
+Operation	                Complexity	                Notes
+Add guest	                 O(1)	            Fast lookup & insertion using Map
+Lookup guest	             O(1)	            Direct Map access
+Remove guest	             O(1)	            Map removal is efficient
+Select venue	             O(n)	            Linear search in a small list
+Generate seating	         O(g + t)	        Each guest is assigned to a table
+Add task                     O(1)	            Deque insertion at front/back
+Execute next task	         O(1)	            Poll from Deque front
+Undo last task	             O(1)	            Pop from Stack and reinsert into Deque
 
 Sorting Algorithm:
-No sorting is required at the end. The data structures maintain logical order efficiently.
+No sorting is required in the end.
 
 How It Works
 
