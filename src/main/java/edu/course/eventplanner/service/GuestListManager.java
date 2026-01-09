@@ -17,7 +17,7 @@ public class GuestListManager {
     //method to add guests
     public void addGuest(Guest guest) {
         //check if the guest already exists
-
+        if (guest == null) return; // safely ignore null
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
         if (guestsByName.containsKey(key)) {
             System.out.println("Guest already exists: " + guest.getName());
@@ -62,6 +62,9 @@ public class GuestListManager {
         return false;
     }
     public Guest findGuest(String guestName) {
+        if (guestName == null || guestName.isEmpty()) {
+            return null;
+        }
         if (guestName.contains("-")) {
             return guestsByName.get(guestName.toLowerCase()); // normalize
         } else {
