@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SelectingAVenueWithinBudget {
+public class VenueSelectorTest {
 
     private List<Venue> venues;
 
