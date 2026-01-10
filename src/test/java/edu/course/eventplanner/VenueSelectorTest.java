@@ -24,24 +24,20 @@ public class VenueSelectorTest {
     }
 
     @Test
-    public void selectAVenueWithinBudget() {
+    void selectAVenueWithinBudget() {
         double budget = 3000;
         int guests = 50;
 
         VenueSelector venueSelector = new VenueSelector(venues);
         Venue selectedVenue = venueSelector.selectVenue(budget, guests);
 
-        // Verify that a venue is selected
         assertNotNull(selectedVenue, "A venue should be selected within the budget and guest count");
-
-        // Verify that the venue fits the budget
         assertTrue(selectedVenue.getCost() <= budget, "Selected venue should be within the budget");
-
-        // Verify that the venue fits the guest count
         assertTrue(selectedVenue.getCapacity() >= guests, "Selected venue should accommodate all guests");
     }
+
     @Test
-    public void selectAVenueWithTooLowBudget() {
+    void selectAVenueWithTooLowBudget() {
         double budget = 100; // Too low for any venue
         int guests = 10;
 
@@ -50,8 +46,9 @@ public class VenueSelectorTest {
 
         assertNull(selectedVenue, "No venue should be selected if budget is too low");
     }
+
     @Test
-    public void selectAVenueWithTooManyGuests() {
+    void selectAVenueWithTooManyGuests() {
         double budget = 10000;
         int guests = 1000; // More than any venue capacity
 
@@ -60,8 +57,9 @@ public class VenueSelectorTest {
 
         assertNull(selectedVenue, "No venue should be selected if guest count exceeds all capacities");
     }
+
     @Test
-    public void selectCheapestVenueWhenMultipleFit() {
+    void selectCheapestVenueWhenMultipleFit() {
         double budget = 3000;
         int guests = 40;
 
@@ -71,6 +69,7 @@ public class VenueSelectorTest {
         assertNotNull(selectedVenue, "Venue should be selected");
         assertEquals("Chynka", selectedVenue.getName(), "Should pick the cheapest venue that fits");
     }
+
     @Test
     void selectVenueFromEmptyList() {
         VenueSelector venueSelector = new VenueSelector(List.of());

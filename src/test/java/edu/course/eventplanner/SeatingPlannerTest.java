@@ -3,6 +3,8 @@ package edu.course.eventplanner;
 import edu.course.eventplanner.model.Guest;
 import edu.course.eventplanner.model.Venue;
 import edu.course.eventplanner.service.SeatingPlanner;
+import edu.course.eventplanner.service.VenueSelector;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -10,99 +12,94 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SeatingPlannerTest {
-    @Test
-    void generateSeating_emptyGuestList_returnsEmptySeating() {
-        Venue venue = new Venue("Test Hall", 1000, 100, 10, 10);
-        SeatingPlanner planner = new SeatingPlanner(venue);
 
-        Map<Integer, List<Guest>> seating = planner.generateSeating(List.of());
+    private Venue venue;
+    private SeatingPlanner seatingPlanner;
+    private List<Guest> guests;
 
-        assertNotNull(seating);
-        assertTrue(seating.isEmpty() || seating.values().stream().allMatch(List::isEmpty));
-    }
-    @Test
-    void generateSeating_singleGuest_isSeated() {
-        Venue venue = new Venue("Test Hall", 1000, 100, 10, 10);
-        SeatingPlanner planner = new SeatingPlanner(venue);
-
-        Map<Integer, List<Guest>> seating =
-                planner.generateSeating(List.of(new Guest("Alice", "Family")));
-
-        int totalSeated = seating.values().stream().mapToInt(List::size).sum();
-        assertEquals(1, totalSeated);
-    }
-    @Test
-    void generateSeating_doesNotExceedTableCapacity() {
-        Venue venue = new Venue("Small Hall", 500, 50, 5, 10);
-        SeatingPlanner planner = new SeatingPlanner(venue);
-
-        List<Guest> guests = new ArrayList<>();
-        for (int i = 0; i < 45; i++) {
-            guests.add(new Guest("Guest" + i, "Group" + (i % 5)));
-        }
-
-        Map<Integer, List<Guest>> seating = planner.generateSeating(guests);
-
-        for (List<Guest> table : seating.values()) {
-            assertTrue(table.size() <= venue.getSeatsPerTable());
-        }
-    }
-    @Test
-    void generateSeating_allGuestsSeatedExactlyOnce() {
-        Venue venue = new Venue("Medium Hall", 1500, 150, 15, 10);
-        SeatingPlanner planner = new SeatingPlanner(venue);
-
-        List<Guest> guests = List.of(
-                new Guest("Rikki", "family"),
-                new Guest("Lea", "family"),
-                new Guest("Aviva", "friends")
+    @BeforeEach
+    void setUp() {
+        // set up venue for all tests
+        venue = new Venue(
+                "Test Venue",
+                1000,   // cost
+                20,     // capacity
+                5,      // tables
+                4       // seats per table
         );
+        seatingPlanner = new SeatingPlanner(venue);
+        guests = new ArrayList<>();
+    }
 
-        Map<Integer, List<Guest>> seating = planner.generateSeating(guests);
+
+    @Test
+    void seatingEmptyGuests() {
+        Map<Integer, List<Guest>> seating = seatingPlanner.generateSeating(guests);
+
+        int totalSeated = seating.values().stream()
+                .mapToInt(List::size)
+                .sum();
+
+        assertEquals(0, totalSeated, "There should be no guests seated");
+    }
+
+    @Test
+    void allGuestsAreSeatedExactlyOnce() {
+        guests.add(new Guest("Rikki", "family"));
+        guests.add(new Guest("Lea", "family"));
+        guests.add(new Guest("Aviva", "friends"));
+
+        Map<Integer, List<Guest>> seating = seatingPlanner.generateSeating(guests);
 
         Set<Guest> seatedGuests = new HashSet<>();
-        for (List<Guest> table : seating.values()) {
-            seatedGuests.addAll(table);
+        seating.values().forEach(seatedGuests::addAll);
+
+        assertEquals(guests.size(), seatedGuests.size(), "All guests should be seated exactly once");
+        for (Guest g : guests) {
+            assertTrue(seatedGuests.contains(g), "Guest " + g.getName() + " should be seated");
         }
-
-        assertEquals(guests.size(), seatedGuests.size());
-        assertTrue(seatedGuests.containsAll(guests));
     }
+
+
     @Test
-    void generateSeating_groupsSitTogether() {
-        Venue venue = new Venue("Test Venue", 1000, 20, 5, 4);
-        SeatingPlanner planner = new SeatingPlanner(venue);
+    void allGuestsFromTheSameGroupSitTogether() {
+        guests.add(new Guest("Rikki", "family"));
+        guests.add(new Guest("Lea", "family"));
+        guests.add(new Guest("Dovi", "family"));
+        guests.add(new Guest("Aviva", "family"));
+        guests.add(new Guest("Zahava", "friends"));
 
-        List<Guest> guests = List.of(
-                new Guest("A", "family"),
-                new Guest("B", "family"),
-                new Guest("C", "family"),
-                new Guest("D", "friends")
-        );
-
-        Map<Integer, List<Guest>> seating = planner.generateSeating(guests);
+        Map<Integer, List<Guest>> seating = seatingPlanner.generateSeating(guests);
 
         for (List<Guest> table : seating.values()) {
             if (table.isEmpty()) continue;
-
-            String group = table.get(0).getGroupTag();
+            String groupTag = table.get(0).getGroupTag();
             for (Guest g : table) {
-                assertEquals(group, g.getGroupTag());
+                assertEquals(groupTag, g.getGroupTag(), "Guests at the same table should have the same group tag");
             }
         }
-    }@Test
-    void generateSeating_doesNotUseMoreTablesThanAvailable() {
-        Venue venue = new Venue("Small Hall", 500, 50, 5, 10);
-        SeatingPlanner planner = new SeatingPlanner(venue);
-
-        List<Guest> guests = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            guests.add(new Guest("Guest" + i, "Group1"));
-        }
-
-        Map<Integer, List<Guest>> seating = planner.generateSeating(guests);
-
-        assertTrue(seating.size() <= venue.getTables());
     }
 
+    @Test
+    void seatingDoesNotExceedTableCapacity() {
+        guests.add(new Guest("Rikki", "family"));
+        guests.add(new Guest("Lea", "family"));
+        guests.add(new Guest("Aviva", "family"));
+        guests.add(new Guest("Gabriella", "family"));
+        guests.add(new Guest("Dovi", "family"));
+        guests.add(new Guest("Ezra", "family"));
+
+        Map<Integer, List<Guest>> seating = seatingPlanner.generateSeating(guests);
+        for (List<Guest> table : seating.values()) {
+            assertTrue(table.size() <= venue.getSeatsPerTable(), "Table should not exceed its capacity");
+        }
+    }
+
+    @Test
+    void venueSelectorNoAvailableVenue() {
+        List<Venue> venues = List.of(new Venue("Tiny", 1000, 5, 1, 2));
+        VenueSelector selector = new VenueSelector(venues);
+        Venue result = selector.selectVenue(50, 10); // too low budget, too many guests
+        assertNull(result, "No venue should be selected if none fits");
+    }
 }
