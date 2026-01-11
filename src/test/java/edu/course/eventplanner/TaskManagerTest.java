@@ -48,6 +48,12 @@ public class TaskManagerTest {
         assertNull(task, "Executing a task on an empty manager should return null");
         assertEquals(0, taskManager.remainingTaskCount(), "No tasks should remain");
     }
+    @Test
+    void testGetDescription(){
+        Task task = new Task("Task 1");
+        taskManager.addTask(task);
+        assertEquals("Task 1", task.getDescription());
+    }
 
 
     @Test
