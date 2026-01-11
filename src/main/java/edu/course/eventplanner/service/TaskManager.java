@@ -25,8 +25,9 @@ public class TaskManager {
     // Undo the last executed task
     public Task undoLastTask() {
         if (!completed.isEmpty()) {
+            //take off the top
             Task last = completed.pop();
-            // Put it back at the front of the queue if you want it next
+            // Put it back at the front of the queue
             upcoming.addFirst(last);
             return last;
         }

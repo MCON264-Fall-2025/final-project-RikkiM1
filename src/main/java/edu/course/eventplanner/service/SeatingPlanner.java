@@ -17,7 +17,7 @@ public class SeatingPlanner {
      * Guests with the same groupTag are seated together when possible.
      */
     //Create a seating chart.
-    //takes ina list of Guest objects.
+    //takes in a list of Guest objects.
     //Key = table number
     //Value = list of Guest objects at that table (List<Guest>)
     public Map<Integer, List<Guest>> generateSeating(List<Guest> guests) {
@@ -45,7 +45,7 @@ public class SeatingPlanner {
         int seatsPerTable = venue.getSeatsPerTable();
         int tableNumber = 1;
 
-        // 2. Assign guests to tables
+        //  Assign guests to tables
         while (!groupQueues.isEmpty()) {
             // Make a copy of the keys to avoid copy/modifications that we dont want to touch
             List<String> groupKeys = new ArrayList<>(groupQueues.keySet());

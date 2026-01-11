@@ -1,7 +1,6 @@
 package edu.course.eventplanner.service;
 
 import edu.course.eventplanner.model.Guest;
-import edu.course.eventplanner.model.Venue;
 
 import java.util.*;
 
@@ -14,7 +13,7 @@ public class GuestListManager {
     Map<String, Guest> guestsByName = new HashMap<>();
 
     public void addGuest(Guest guest) {
-        if (guest == null) return; // safely ignore null
+        if (guest == null) return; // ignore null
 
         String key = (guest.getName() + "-" + guest.getGroupTag()).toLowerCase();
 
@@ -23,7 +22,7 @@ public class GuestListManager {
             Guest oldGuest = guestsByName.get(key);
             int index = guests.indexOf(oldGuest);
             if (index != -1) {
-                guests.set(index, guest); // replace in the list
+                guests.set(index, guest); // replace
             }
             guestsByName.put(key, guest); // replace in the map
             System.out.println("Replaced existing guest: " + guest.getName());
@@ -34,26 +33,27 @@ public class GuestListManager {
         guests.add(guest);
         guestsByName.put(key, guest);
     }
+
     public boolean removeGuest(String guestKey) {
         if (guestKey == null || guestKey.isEmpty()) {
-            return false; // safely return false instead of throwing an exception
+            return false;
         }
-        String normalizedKey = guestKey.toLowerCase();
+        String normalKey = guestKey.toLowerCase();
 
-        // Case 1: full key provided (name-tag)
-        if (normalizedKey.contains("-")) {
-            Guest guest = guestsByName.get(normalizedKey);
+
+        if (normalKey.contains("-")) {
+            Guest guest = guestsByName.get(normalKey);
 
             if (guest == null) {
                 return false;
             }
 
             guests.remove(guest);
-            guestsByName.remove(normalizedKey);
+            guestsByName.remove(normalKey);
             return true;
         }
 
-        // Case 2: name only provided (TEST CASE)
+        //loop through the map
         for (Map.Entry<String, Guest> entry : guestsByName.entrySet()) {
             Guest guest = entry.getValue();
 
@@ -66,12 +66,14 @@ public class GuestListManager {
 
         return false;
     }
+
     public Guest findGuest(String guestName) {
         if (guestName == null || guestName.isEmpty()) {
             return null;
         }
+        //if full name and key with - in middle
         if (guestName.contains("-")) {
-            return guestsByName.get(guestName.toLowerCase()); // normalize
+            return guestsByName.get(guestName.toLowerCase());
         } else {
             for (Guest g : guests) {
                 if (g.getName().equalsIgnoreCase(guestName)) { // ignore case

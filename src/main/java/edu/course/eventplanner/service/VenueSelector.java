@@ -20,11 +20,13 @@ public class VenueSelector {
     public Venue selectVenue(double budget, int guestCount) {
         Venue selectedVenue = null;
 
+        //loop through all the venues
         for (Venue venue : venueMap.values()) {
-
+//check for if in budget and capacity
             if (venue.getCost() <= budget &&
                     venue.getCapacity() >= guestCount) {
-
+//choose best option
+                //this venue is cheaper than the one currently selected
                 if (selectedVenue == null ||
                         venue.getCost() < selectedVenue.getCost() ||
                         (venue.getCost() == selectedVenue.getCost() &&
