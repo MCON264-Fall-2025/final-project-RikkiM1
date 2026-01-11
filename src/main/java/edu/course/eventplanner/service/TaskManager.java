@@ -1,13 +1,41 @@
 package edu.course.eventplanner.service;
 
+
 import edu.course.eventplanner.model.Task;
 import java.util.*;
 
 public class TaskManager {
-    private final Queue<Task> upcoming = new LinkedList<>();
+    private final Deque<Task> upcoming = new LinkedList<>();
     private final Stack<Task> completed = new Stack<>();
-    public void addTask(Task task) { /* TODO */ }
-    public Task executeNextTask() { return null; }
-    public Task undoLastTask() { return null; }
-    public int remainingTaskCount() { return upcoming.size(); }
+
+    // Add a new task to the queue
+    public void addTask(Task task) {
+        upcoming.addLast(task);
+    }
+
+    // Execute the next task in the queue
+    public Task executeNextTask() {
+        Task next = upcoming.pollFirst(); // removes head of the queue
+        if (next != null) {
+            completed.push(next); // track completed tasks for undo
+        }
+        return next;
+    }
+
+    // Undo the last executed task
+    public Task undoLastTask() {
+        if (!completed.isEmpty()) {
+            //take off the top
+            Task last = completed.pop();
+            // Put it back at the front of the queue
+            upcoming.addFirst(last);
+            return last;
+        }
+        return null; // nothing to undo
+    }
+
+    // Get the number of remaining tasks
+    public int remainingTaskCount() {
+        return upcoming.size();
+    }
 }

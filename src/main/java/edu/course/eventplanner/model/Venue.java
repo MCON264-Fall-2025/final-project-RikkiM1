@@ -18,4 +18,10 @@ public class Venue {
     public int getCapacity() { return capacity; }
     public int getTables() { return tables; }
     public int getSeatsPerTable() { return seatsPerTable; }
+    @Override
+    public String toString() {
+        return "Venu: Name =" + name + "', Cost =" + cost
+                +", Capacity=" + capacity + ", Tables=" + tables
+                +", SeatsPerTable=" + seatsPerTable;
+    }
 }
