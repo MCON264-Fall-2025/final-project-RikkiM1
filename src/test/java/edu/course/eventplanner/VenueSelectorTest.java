@@ -23,8 +23,20 @@ public class VenueSelectorTest {
         );
     }
     //checks that the methods in Venue are correct.
+
+@Test
+void getsNameCorrectly(){
+    Venue venue = new Venue(
+            "Test Venue",
+            1500.0,
+            50,
+            5,
+            10
+    );
+    assertEquals("Test Venue", venue.getName());
+}
     @Test
-    void venueStoresValuesCorrectly() {
+    void getsCostCorrectly(){
         Venue venue = new Venue(
                 "Test Venue",
                 1500.0,
@@ -32,14 +44,41 @@ public class VenueSelectorTest {
                 5,
                 10
         );
-
-        assertEquals("Test Venue", venue.getName());
-        assertEquals(1500.0, venue.getCost());
-        assertEquals(50, venue.getCapacity());
-        assertEquals(5, venue.getTables());
-        assertEquals(10, venue.getSeatsPerTable());
+        assertEquals("1500", venue.getCost());
     }
-
+    @Test
+    void getsCapacityCorrectly(){
+        Venue venue = new Venue(
+                "Test Venue",
+                1500.0,
+                50,
+                5,
+                10
+        );
+        assertEquals("50", venue.getCapacity());
+    }
+    @Test
+    void getsTablesCorrectly(){
+        Venue venue = new Venue(
+                "Test Venue",
+                1500.0,
+                50,
+                5,
+                10
+        );
+        assertEquals("5", venue.getTables());
+    }
+    @Test
+    void getsSeatsPerTableCorrectly(){
+        Venue venue = new Venue(
+                "Test Venue",
+                1500.0,
+                50,
+                5,
+                10
+        );
+        assertEquals("10", venue.getSeatsPerTable());
+    }
     //make sure the budget chosen is within budget
     @Test
     void selectAVenueWithinBudget() {
