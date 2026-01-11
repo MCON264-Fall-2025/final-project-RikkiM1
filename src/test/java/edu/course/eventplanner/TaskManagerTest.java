@@ -59,6 +59,11 @@ public class TaskManagerTest {
         assertNull(undone, "Undo without any executed tasks should return null");
         assertEquals(1, taskManager.remainingTaskCount(), "Task should still be in the upcoming queue");
     }
+    @Test
+    void sanityCoverageTaskManager() {
+        TaskManager tm = new TaskManager();
+        assertNotNull(tm);
+    }
 
     @Test
     void undoOnEmptyManager() {
