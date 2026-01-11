@@ -28,6 +28,14 @@ public class GuestListManagerTest {
         Guest firstGuest = guestListManager.getAllGuests().getFirst();
         assertEquals("Alice", firstGuest.getName());
     }
+    @Test
+    void testGetGroupTag() {
+        Guest guest = new Guest("Alice", "family");
+        guestListManager.addGuest(guest);
+        assertEquals(1, guestListManager.getGuestCount(), "Guest count should be 1");
+        Guest firstGuest = guestListManager.getAllGuests().getFirst();
+        assertEquals("family", firstGuest.getGroupTag());
+    }
 
     @Test
     void testAddOneGuestAtATime() {
