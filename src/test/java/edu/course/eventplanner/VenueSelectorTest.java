@@ -44,7 +44,7 @@ void getsNameCorrectly(){
                 5,
                 10
         );
-        assertEquals("1500", venue.getCost());
+        assertEquals("1500.0", venue.getCost());
     }
     @Test
     void getsCapacityCorrectly(){
