@@ -22,7 +22,25 @@ public class VenueSelectorTest {
                 new Venue("El Caribe", 5000, 120, 15, 8)
         );
     }
+    //checks that the methods in Venue are correct.
+    @Test
+    void venueStoresValuesCorrectly() {
+        Venue venue = new Venue(
+                "Test Venue",
+                1500.0,
+                50,
+                5,
+                10
+        );
 
+        assertEquals("Test Venue", venue.getName());
+        assertEquals(1500.0, venue.getCost());
+        assertEquals(50, venue.getCapacity());
+        assertEquals(5, venue.getTables());
+        assertEquals(10, venue.getSeatsPerTable());
+    }
+
+    //make sure the budget chosen is within budget
     @Test
     void selectAVenueWithinBudget() {
         double budget = 3000;
@@ -32,29 +50,30 @@ public class VenueSelectorTest {
         Venue selectedVenue = venueSelector.selectVenue(budget, guests);
 
         assertNotNull(selectedVenue, "A venue should be selected within the budget and guest count");
+        //check the venue and budget
         assertTrue(selectedVenue.getCost() <= budget, "Selected venue should be within the budget");
         assertTrue(selectedVenue.getCapacity() >= guests, "Selected venue should accommodate all guests");
     }
 
     @Test
     void selectAVenueWithTooLowBudget() {
-        double budget = 100; // Too low for any venue
+        double budget = 100;
         int guests = 10;
 
         VenueSelector venueSelector = new VenueSelector(venues);
         Venue selectedVenue = venueSelector.selectVenue(budget, guests);
-
+//no venue should be chosen
         assertNull(selectedVenue, "No venue should be selected if budget is too low");
     }
 
     @Test
     void selectAVenueWithTooManyGuests() {
         double budget = 10000;
-        int guests = 1000; // More than any venue capacity
+        int guests = 1000;
 
         VenueSelector venueSelector = new VenueSelector(venues);
         Venue selectedVenue = venueSelector.selectVenue(budget, guests);
-
+//no venue should be chosen because of capacity
         assertNull(selectedVenue, "No venue should be selected if guest count exceeds all capacities");
     }
 
@@ -65,7 +84,7 @@ public class VenueSelectorTest {
 
         VenueSelector venueSelector = new VenueSelector(venues);
         Venue selectedVenue = venueSelector.selectVenue(budget, guests);
-
+//choosing the best venue
         assertNotNull(selectedVenue, "Venue should be selected");
         assertEquals("Chynka", selectedVenue.getName(), "Should pick the cheapest venue that fits");
     }

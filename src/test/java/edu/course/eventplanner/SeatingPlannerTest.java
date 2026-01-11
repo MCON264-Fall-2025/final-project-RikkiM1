@@ -94,14 +94,6 @@ public class SeatingPlannerTest {
             assertTrue(table.size() <= venue.getSeatsPerTable(), "Table should not exceed its capacity");
         }
     }
-    //AI told me to add this test when I was trying to see what I can do to add more coverage because I felt that I
-    //already tested for so much.
-    @Test
-    void sanityCoverageTest() {
-        SeatingPlanner sp = new SeatingPlanner(venue);
-        assertNotNull(sp);
-    }
-
     @Test
     void venueSelectorNoAvailableVenue() {
         List<Venue> venues = List.of(new Venue("Tiny", 1000, 5, 1, 2));
