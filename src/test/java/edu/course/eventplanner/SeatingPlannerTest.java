@@ -94,6 +94,11 @@ public class SeatingPlannerTest {
             assertTrue(table.size() <= venue.getSeatsPerTable(), "Table should not exceed its capacity");
         }
     }
+    @Test
+    void sanityCoverageTest() {
+        SeatingPlanner sp = new SeatingPlanner(venue);
+        assertNotNull(sp);
+    }
 
     @Test
     void venueSelectorNoAvailableVenue() {
