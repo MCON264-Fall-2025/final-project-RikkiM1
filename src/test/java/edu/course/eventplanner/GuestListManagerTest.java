@@ -80,6 +80,17 @@ public class GuestListManagerTest {
         guestListManager.addGuest(guest); // duplicate
         assertEquals(1, guestListManager.getGuestCount(), "Duplicate guest should not be added");
     }
+    @Test
+    void testGetCount() {
+        Guest g1 = new Guest("Alice", "family");
+        Guest g2 = new Guest("Bob", "friends");
+        Guest g3 = new Guest("Charlie", "coworkers");
+
+        guestListManager.addGuest(g1);
+        guestListManager.addGuest(g2);
+        guestListManager.addGuest(g3);
+        assertEquals(3, guestListManager.getGuestCount(), "guest count should be 3");
+    }
 
     @Test
     void addMultipleDuplicateGuests() {
