@@ -65,7 +65,29 @@ class MainTest {
         assertEquals(t1, undone);
         assertEquals(2, taskManager.remainingTaskCount());
     }
+    @Test
+    void testRemoveNonExistentGuest() {
+        Scanner scanner = new Scanner("Bob\nfriends\n");
+        Main.removeGuest(scanner, guestListManager); // No guests yet
+        assertEquals(0, guestListManager.getGuestCount());
+    }
+    @Test
+    void testExecuteNextAndUndoViaMain() {
+        taskManager.addTask(new Task("Task A"));
+        taskManager.addTask(new Task("Task B"));
 
+        // Execute next task via Main
+        Main.executeNextTask(taskManager); // prints "Task A"
+        assertEquals(1, taskManager.remainingTaskCount());
+
+        // Undo last task via Main
+        Main.undoLastTask(taskManager); // prints "Task A"
+        assertEquals(2, taskManager.remainingTaskCount());
+    }
+    @Test
+    void testGenerateSeatingWithNullVenue() {
+        Main.generateSeating(null, guestListManager); // Should just print warning, not crash
+    }
     @Test
     void testLoadSampleData() {
         Main.loadSampleData(taskManager, guestListManager);

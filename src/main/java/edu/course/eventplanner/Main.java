@@ -195,7 +195,7 @@ public class Main {
         taskManager.addTask(new Task(desc));
     }
 
-    private static void executeNextTask(TaskManager taskManager) {
+    public static void executeNextTask(TaskManager taskManager) {
         System.out.println("Execute next task");
         Task next = taskManager.executeNextTask();
         if (next != null) {
@@ -206,7 +206,7 @@ public class Main {
         }
     }
 
-    private static void undoLastTask(TaskManager taskManager) {
+    public static void undoLastTask(TaskManager taskManager) {
         System.out.println("Undo last task");
         Task last = taskManager.undoLastTask();
         if (last != null) {
