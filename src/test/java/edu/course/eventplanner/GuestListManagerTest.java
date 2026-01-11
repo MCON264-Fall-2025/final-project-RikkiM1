@@ -19,6 +19,17 @@ public class GuestListManagerTest {
     }
 
 
+    @Test
+    void getNameReturnsCorrectName() {
+        Guest guest = new Guest("Alice", "family");
+        assertEquals("Alice", guest.getName(), "getName should return the correct guest name");
+    }
+
+    @Test
+    void getGroupTagReturnsCorrectTag() {
+        Guest guest = new Guest("Alice", "family");
+        assertEquals("family", guest.getGroupTag(), "getGroupTag should return the correct group tag");
+    }
 
     @Test
     void testAddGuestToExistingGuest() {
@@ -99,7 +110,6 @@ public class GuestListManagerTest {
         assertEquals(20, guestListManager.getGuestCount());
     }
 
-    // ----------------- Remove Guest Tests -----------------
     @Test
     void testRemoveGuestByFullKey() {
         Guest guest = new Guest("Alice", "family");
