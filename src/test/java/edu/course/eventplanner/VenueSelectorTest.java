@@ -44,7 +44,7 @@ void getsNameCorrectly(){
                 5,
                 10
         );
-        assertEquals("1500.0", venue.getCost());
+        assertEquals(1500.0, venue.getCost());
     }
     @Test
     void getsCapacityCorrectly(){
@@ -55,7 +55,7 @@ void getsNameCorrectly(){
                 5,
                 10
         );
-        assertEquals("50", venue.getCapacity());
+        assertEquals(50, venue.getCapacity());
     }
     @Test
     void getsTablesCorrectly(){
@@ -66,7 +66,7 @@ void getsNameCorrectly(){
                 5,
                 10
         );
-        assertEquals("5", venue.getTables());
+        assertEquals(5, venue.getTables());
     }
     @Test
     void getsSeatsPerTableCorrectly(){
@@ -77,7 +77,7 @@ void getsNameCorrectly(){
                 5,
                 10
         );
-        assertEquals("10", venue.getSeatsPerTable());
+        assertEquals(10, venue.getSeatsPerTable());
     }
     //make sure the budget chosen is within budget
     @Test
