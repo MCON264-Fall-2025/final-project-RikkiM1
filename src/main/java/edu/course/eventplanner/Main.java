@@ -80,7 +80,7 @@ public class Main {
                 "\n10. Finish");
     }
 
-    private static void loadSampleData(TaskManager taskManager, GuestListManager guestListManager) {
+    public static void loadSampleData(TaskManager taskManager, GuestListManager guestListManager) {
         System.out.println("Load sample data");
 
         System.out.println("Sample guests:");
@@ -104,7 +104,11 @@ public class Main {
 
         taskManager.addTask(new Task("Loaded sample data"));
     }
-
+    public static void generateGuests(GuestListManager manager, int count) {
+        for (Guest g : Generators.GenerateGuests(count)) {
+            manager.addGuest(g);
+        }
+    }
     public static void addGuestManually(Scanner kybd, GuestListManager guestListManager) {
         System.out.println("Add guests manually");
         System.out.print("Name: ");
@@ -140,7 +144,7 @@ public class Main {
         }
     }
 
-    private static Venue selectVenue(Scanner kybd, List<Venue> venues, double budget, int guests) {
+    public static Venue selectVenue(Scanner kybd, List<Venue> venues, double budget, int guests) {
         System.out.println("Select venue");
         VenueSelector venueSelector = new VenueSelector(venues);
         Venue selectedVenue = venueSelector.selectVenue(budget, guests);
@@ -168,7 +172,7 @@ public class Main {
         return selectedVenue;
     }
 
-    private static void generateSeating(Venue selectedVenue, GuestListManager guestListManager) {
+    public static void generateSeating(Venue selectedVenue, GuestListManager guestListManager) {
         if (selectedVenue == null) {
             System.out.println("You must select a venue first.");
             return;
